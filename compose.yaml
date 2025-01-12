@@ -1,0 +1,15 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: pps.Dockerfile
+    init: true
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=src/pps.py
+      - FLASK_RUN_HOST=0.0.0.0
+    volumes:
+      - .:/app
+    command: 
+      - /app/kickoff.sh
