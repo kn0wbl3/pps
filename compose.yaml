@@ -6,10 +6,28 @@ services:
     init: true
     ports:
       - "5000:5000"
+    env_file:
+      - .env
     environment:
       - FLASK_APP=src/pps.py
       - FLASK_RUN_HOST=0.0.0.0
+      - DATABASE_URL=postgresql://user:password@db:5432/mydatabase
     volumes:
       - .:/app
-    command: 
-      - /app/kickoff.sh
+    # depends_on:
+    #   - db
+    command: python3.10 main.py
+
+  db:
+    image: postgres:latest  
+    container_name: pps_db
+    environment:
+      - POSTGRES_USER=user  # The username for the database
+      - POSTGRES_PASSWORD=password  # The password for the database
+      - POSTGRES_DB=mydatabase  # The name of the database to create
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistent storage for PostgreSQL
+
+# Volumes
+volumes:
+  postgres_data:
